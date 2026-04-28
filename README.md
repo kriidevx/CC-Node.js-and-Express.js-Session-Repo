@@ -778,6 +778,269 @@ Open Postman. We're going to test all 5 routes.
 4. PUT    /api/posts/1  body: { "title": "Updated Title" }     → 200
 5. DELETE /api/posts/1                                         → 200, array without post 1
 ```
+## 📍 SLIDES 32–35 — MongoDB Integration (Real Database)
+
+Until now, we’ve been using an in-memory array as our database:
+
+```js
+let posts = [...]
+```
+
+This helped us understand API logic, but it comes with a major limitation.
+
+### ❌ Problem with Current Approach
+
+* Data is stored in memory
+* Server restart = data loss
+* Not usable in real-world applications
+
+---
+
+## ✅ Why MongoDB?
+
+MongoDB allows us to store data permanently in a database.
+
+**What changes:**
+
+* Data is now stored in MongoDB
+* Survives server restarts
+* Can scale for real applications
+
+**What stays the same:**
+
+* Same 5 routes (GET, POST, PUT, DELETE)
+* Same request and response structure
+* Same API design
+
+👉 We are only replacing the **data layer**, not the API.
+
+---
+
+## 🔌 Step 1 — Install & Setup
+
+Install Mongoose:
+
+```bash
+npm install mongoose
+```
+
+Add this to your `.env` file:
+
+```
+MONGO_URI=your_mongodb_connection_string
+```
+
+**Example:**
+
+```
+MONGO_URI=mongodb://localhost:27017/posts-app
+```
+
+Mongoose is a library that helps us:
+
+* Connect Node.js to MongoDB
+* Define data structure
+* Perform database operations easily
+
+---
+
+## 🧠 Step 2 — Connect & Create Model
+
+We now connect to MongoDB and define how our data should look.
+
+### Concept:
+
+* **Schema** → defines structure
+* **Model** → used to read/write data
+
+### Example Data in MongoDB:
+
+Instead of this:
+
+```js
+{ id: 1, title: "Post One" }
+```
+
+MongoDB stores:
+
+```json
+{
+  "_id": "661f8c9b2f1a4c001234abcd",
+  "title": "Post One"
+}
+```
+
+Notice:
+
+* `_id` is automatically generated
+* No need to manually manage IDs
+
+👉 This model now replaces our `posts` array.
+
+---
+
+## 🔄 Step 3 — Same Routes, New Data Source
+
+We do not change API routes.
+We only change how data is handled internally.
+
+---
+
+### 📥 GET — Fetch All Posts
+
+**Before (Array):**
+
+* Returns data from memory
+
+**Now (MongoDB):**
+
+* Fetches all posts from database
+
+**Example Response:**
+
+```json
+[
+  { "_id": "1", "title": "Post One" },
+  { "_id": "2", "title": "Post Two" }
+]
+```
+
+---
+
+### 📥 GET — Fetch Single Post
+
+**Before:**
+
+* Search in array using `id`
+
+**Now:**
+
+* Query MongoDB using `_id`
+
+**Example:**
+
+```
+GET /api/posts/661f8c9b2f1a4c001234abcd
+```
+
+---
+
+### 📤 POST — Create New Post
+
+**Before:**
+
+* Push into array
+
+**Now:**
+
+* Insert into MongoDB
+
+**Request Body:**
+
+```json
+{
+  "title": "My New Post"
+}
+```
+
+**Response:**
+
+```json
+{
+  "_id": "661f8c9b2f1a4c001234xyz",
+  "title": "My New Post"
+}
+```
+
+---
+
+### 🔁 PUT — Update Post
+
+**Before:**
+
+* Modify object in array
+
+**Now:**
+
+* Update document in MongoDB
+
+**Example:**
+
+```json
+{
+  "_id": "1",
+  "title": "Updated Title"
+}
+```
+
+---
+
+### ❌ DELETE — Remove Post
+
+**Before:**
+
+* Filter array
+
+**Now:**
+
+* Delete document from database
+
+---
+
+## 🔁 Before vs After
+
+| Feature     | Array (Before)    | MongoDB (After) |
+| ----------- | ----------------- | --------------- |
+| Storage     | In-memory         | Database        |
+| Persistence | ❌ Lost on restart | ✅ Permanent     |
+| ID Handling | Manual            | Automatic       |
+| Scalability | Limited           | High            |
+| API Routes  | Same              | Same            |
+
+---
+
+## 🧪 Example Flow (End-to-End)
+
+1. Create a post
+
+```
+POST /api/posts
+```
+
+2. Fetch all posts
+
+```
+GET /api/posts
+```
+
+3. Update a post
+
+```
+PUT /api/posts/:id
+```
+
+4. Delete a post
+
+```
+DELETE /api/posts/:id
+```
+
+👉 Exact same flow as before — only backend storage changed.
+
+---
+
+## 🧠 Final Takeaway
+
+We didn’t rewrite our API.
+We didn’t change our routes.
+
+We only replaced:
+
+```
+Array → MongoDB
+```
+
+**Same API. Same logic. Now persistent and production-ready.**
 
 ---
 
