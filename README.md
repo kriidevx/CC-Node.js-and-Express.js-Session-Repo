@@ -990,6 +990,103 @@ Open Postman. We're going to test all 5 routes.
 5. DELETE /api/posts/1                                         → 200, array without post 1
 ```
 
+### How to run each request in Postman (click‑by‑click)
+
+**Setup once**
+
+1. Terminal: `npm run dev` from the project root — leave it running.
+2. Postman: click **New** → **HTTP Request** (or use the empty tab if you see one).
+3. Your **full URLs** always start with **`http://localhost:8080`** — copy‑paste the lines below into Postman’s address bar.
+
+**Parts of Postman**
+
+- **Dropdown on the left** of the URL bar = HTTP method (**GET**, **POST**, **PUT**, **DELETE**).
+- **Big URL bar** = paste the full URL here.
+- **Send** = sends the request.
+- **Bottom panel** = **response** — status code (e.g. **200**, **201**) and JSON body. That’s how you “check” it worked.
+
+---
+
+**1 — GET all posts**
+
+| Field | Value |
+|-------|--------|
+| Method | **GET** |
+| URL | `http://localhost:8080/api/posts` |
+| Body | none |
+
+Click **Send**. **Check:** Status **200**, body is a **JSON array** with **3** posts.
+
+---
+
+**2 — GET one post**
+
+| Field | Value |
+|-------|--------|
+| Method | **GET** |
+| URL | `http://localhost:8080/api/posts/1` |
+
+Click **Send**. **Check:** Status **200**, one object — **Post One**.
+
+---
+
+**3 — POST (create)**
+
+| Field | Value |
+|-------|--------|
+| Method | **POST** |
+| URL | `http://localhost:8080/api/posts` |
+
+1. Click the **Body** tab (below the URL).
+2. Select **raw**.
+3. On the right of **raw**, change the dropdown from **Text** to **JSON**.
+4. Paste exactly:
+
+```json
+{ "title": "My New Post" }
+```
+
+5. Click **Send**.
+
+**Check:** Status **201 Created**. Body shows the **new** post (with an `id`).
+
+---
+
+**4 — PUT (update)**
+
+| Field | Value |
+|-------|--------|
+| Method | **PUT** |
+| URL | `http://localhost:8080/api/posts/1` |
+
+1. **Body** → **raw** → **JSON** (same as POST).
+2. Paste:
+
+```json
+{ "title": "Updated Title" }
+```
+
+3. **Send**.
+
+**Check:** Status **200**, post **1** has **`title`: `"Updated Title"`**.
+
+---
+
+**5 — DELETE**
+
+| Field | Value |
+|-------|--------|
+| Method | **DELETE** |
+| URL | `http://localhost:8080/api/posts/1` |
+
+No body. Click **Send**.
+
+**Check:** Status **200**, body is a **JSON array** of posts — **post `1` should be gone**.
+
+---
+
+**Tip:** To run **5** after **4**, post `1` still exists — good. If you already ran **5** or deleted `1`, GET `/api/posts` first and use an **`id` that still appears in the list**, or restart **`npm run dev`** to reset the in‑memory posts.
+
 **Troubleshooting:** Postman shows **Could not get response** → server not running or wrong host/port. **415 / parse errors** → select **JSON** body, not form-data. Results differ from neighbor → in-memory `posts` reset when the server restarts.
 
 ---
