@@ -960,6 +960,26 @@ git commit -m "feat: full CRUD API"
 <a id="final-exercise"></a>
 ## 🧪 FINAL EXERCISE
 
+### Install Postman first (Mac & Windows)
+
+Postman is a **separate desktop app** — it does **not** install with `npm`. You only need it to send **POST**, **PUT**, and **DELETE** with a JSON body (browsers alone are awkward for that).
+
+**macOS**
+
+1. Download the app: **[postman.com/downloads](https://www.postman.com/downloads/)** → choose **Mac (Apple Silicon or Intel)** to match your Mac.
+2. Open the **`.dmg`**, drag **Postman** into **Applications**, then launch it from **Applications** or **Spotlight** (`⌘ + Space`, type `Postman`).
+3. **Optional — Homebrew:** if you use [Homebrew](https://brew.sh), you can run: `brew install --cask postman` then open Postman from Applications.
+
+**Windows**
+
+1. Download the installer: **[postman.com/downloads](https://www.postman.com/downloads/)** → choose **Windows 64-bit**.
+2. Run **`.exe`**, follow the installer (typical “Next” flow), then start Postman from the **Start** menu.
+3. If Windows SmartScreen appears, pick **Run anyway** or **More info → Run anyway** (the installer is from Postman’s official site).
+
+**Before you test:** in a terminal, from the project root, run **`npm run dev`** and leave it running. In Postman, your base URL is **`http://localhost:8080`**.
+
+---
+
 Open Postman. We're going to test all 5 routes.
 
 ```
