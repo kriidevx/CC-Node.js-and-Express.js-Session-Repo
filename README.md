@@ -9,10 +9,12 @@
 
 ```bash
 git clone <repo-link>
-cd my-express-app
+cd <repository-folder>
 npm install
 npm run dev
 ```
+
+Use the folder **git creates for you** when you clone (on GitHub it usually matches the repository name). All lesson files are at the **root** of that folder—no extra `cd` into another subfolder.
 
 Open browser → `http://localhost:8080`
 
@@ -25,7 +27,7 @@ You should see `Hello World 🚀`
 ## 📁 What's In This Repo
 
 ```
-my-express-app/
+.
 ├── examples/
 │   ├── 01_hello.js           ← SLIDE 07 — First Node program
 │   ├── 02_math.js            ← SLIDE 09 — Exporting a module
@@ -41,6 +43,7 @@ my-express-app/
 ├── .env
 ├── .gitignore
 ├── package.json
+├── README.md
 └── server.js                 ← LIVE CODE #1–#5 — All Express coding here
 ```
 
@@ -485,7 +488,7 @@ app.get('/api', (req, res) => { res.json({ message: "alive" }) })
 
 Already done for you in this repo. This is what was set up:
 
-**STEP 1**
+**STEP 1** *(skip if you cloned this repo—you already have the project; run `npm install` from the repo root instead)*  
 ```bash
 mkdir my-express-app
 cd my-express-app
