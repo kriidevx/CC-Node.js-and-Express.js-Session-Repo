@@ -1150,6 +1150,46 @@ MONGO_URI=your_mongodb_connection_string
 MONGO_URI=mongodb://localhost:27017/posts-app
 ```
 
+### Where does `MONGO_URI` come from? (new to MongoDB — read this)
+
+The **connection string** is just the **address + login** MongoDB expects so your Node app can reach a database. You don’t invent it by hand at first—you **copy** it from one of two places:
+
+---
+
+**Option A — MongoDB Atlas (free cloud)** — easiest if you don’t want to install a database on your laptop.
+
+1. Go to **[mongodb.com/cloud/atlas](https://www.mongodb.com/cloud/atlas)** and sign up / log in (free tier is fine).
+2. **Create a project** (any name) → **Build a database** → choose the **FREE (M0)** cluster → pick a **region** close to you → create.
+3. **Database Access** (left menu): **Add New Database User** → choose **Password** → save the **username** and **password** somewhere safe (you’ll paste the password into the URI).
+4. **Network Access** (left menu): **Add IP Address** → for learning, choose **Allow access from anywhere** (`0.0.0.0/0`) so your laptop can connect. (For production you’d lock this down.)
+5. **Database** → your cluster → **Connect** → **Drivers** (or “Connect your application”) → copy the **connection string**. It looks like:
+   ```text
+   mongodb+srv://<username>:<password>@cluster0.xxxxx.mongodb.net/?retryWrites=true&w=majority
+   ```
+6. **Edit that string:** replace `<password>` with your database user’s password (if your password has special characters, you may need to **URL-encode** it). Optionally add a database name before `?`, e.g. `...mongodb.net/posts-app?retryWrites=...`
+7. Put the **full single line** into `.env` as:
+   ```bash
+   MONGO_URI=paste_the_full_string_here
+   ```
+
+That one variable is what **`mongoose.connect(process.env.MONGO_URI)`** uses in code.
+
+---
+
+**Option B — MongoDB on your own computer** (local install).
+
+1. Install **MongoDB Community Server** from **[mongodb.com/try/download/community](https://www.mongodb.com/try/download/community)** (pick your OS).
+2. Start the MongoDB service (on Mac with Homebrew it’s often `brew services start mongodb-community`; the installer may start it for you on Windows).
+3. If you **did not** set up users locally, a simple URI is:
+   ```bash
+   MONGO_URI=mongodb://localhost:27017/posts-app
+   ```
+   Here **`localhost:27017`** is where Mongo listens by default, and **`posts-app`** is just the **database name** (Mongo creates it when you first write data).
+
+If you see **`connection refused`**, Mongo isn’t running locally — start the service or switch to **Atlas (Option A)**.
+
+---
+
 Mongoose is a library that helps us:
 
 * Connect Node.js to MongoDB
