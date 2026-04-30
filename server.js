@@ -25,12 +25,12 @@
 //   touch .gitignore
 //
 // STEP 3 — already configured
-//   .env       → PORT=8080
+//   .env       → PORT=8080 (copy from .env.example after clone; see README)
 //   .gitignore → node_modules/ and .env
 //   package.json:
 //     "type": "module"
 //     "start": "node server.js"
-//     "dev":   "node --watch --env-file=.env server.js"
+//     "dev":   "node --watch server.js"   // dotenv loads .env if present
 // ─────────────────────────────────────────────────────
 
 import express from 'express';

@@ -16,6 +16,14 @@ npm run dev
 
 Use the folder **git creates for you** when you clone (on GitHub it usually matches the repository name). All lesson files are at the **root** of that folder—no extra `cd` into another subfolder.
 
+### After `git clone` — read this once (prevents most “my repo is broken” issues)
+
+| Question | Answer |
+|----------|--------|
+| **Why two `package.json` files?** | **Root** `package.json` = the real Express app (`npm install` / `npm run dev`). **`examples/package.json`** is tiny on purpose: it only sets `"type": "commonjs"` so the slide files under `examples/` can use `require()`. It is **not** a second project—do **not** run `npm init` inside `examples/`, and do **not** delete it. |
+| **Where is `.env`?** | It is **not** on GitHub (secrets stay off the remote). This repo includes **`.env.example`**. For slides that read env vars (e.g. `examples/09_env.js`), copy it once: **macOS/Linux:** `cp .env.example .env` · **Windows (cmd):** `copy .env.example .env` · **Windows (PowerShell):** `Copy-Item .env.example .env`. Express will still start without `.env` (default port **8080** in code); copying is mainly for matching the lesson and avoiding `undefined` in env demos. |
+| **What should I never do at the root after cloning?** | **`npm init` / `npm init -y`** — it **overwrites** the root `package.json`. Use **`npm install`** only. |
+
 **Important — if you cloned this repo:** run **`npm install`** then **`npm run dev`** only. **Do not run `npm init` or `npm init -y` here.** The project already has a root `package.json`; running `npm init` **overwrites** that file and can break scripts or confuse the next `npm install`. Slides still teach `npm init -y` for when you create a **new empty folder** from scratch—the clone workflow is different.
 
 Open browser → `http://localhost:8080`
@@ -36,6 +44,7 @@ You should see `Hello World 🚀`
 
 ```
 .
+├── .env.example              ← safe template; copy to `.env` locally (`.env` is gitignored)
 ├── examples/
 │   ├── package.json          ← CommonJS for slide `require()` scripts only (do not delete; do not `npm init` here)
 │   ├── 01_hello.js           ← SLIDE 07 — First Node program
@@ -49,7 +58,7 @@ You should see `Hello World 🚀`
 │   └── 09_env.js             ← SLIDES 18-19 — Environment variables
 ├── middleware/
 │   └── logger.js             ← LIVE CODE #4 — Custom logger
-├── .env
+├── .env                      ← you create (copy from `.env.example`) — not committed to Git
 ├── .gitignore
 ├── package.json
 ├── README.md
@@ -406,7 +415,8 @@ JSON.stringify(data);
 - Easy to change config without editing code
 - Different settings for dev / production
 
-**File:** `.env`
+**File:** `.env` (create by copying **`.env.example`** in this repo, or paste the block below next to `package.json`)
+
 ```
 PORT=8080
 DB_URL=mongodb://localhost:27017/notes-app
@@ -417,6 +427,8 @@ API_BASE_URL=https://api.weatherapi.com
 ```bash
 npm install dotenv
 ```
+
+*(If you **cloned** this repo, `dotenv` is already in `package.json`—**`npm install`** at the root is enough. Use the command above only when you created a **new** project from scratch.)*
 
 **File:** `examples/09_env.js`
 
@@ -441,7 +453,7 @@ server.listen(PORT, () => {
 
 **Always add `.env` to `.gitignore` — never push secrets to GitHub.**
 
-**Troubleshooting:** **`Cannot find module 'dotenv'`** → run `npm install` from the repo root (this repo already lists `dotenv`). **`PORT` is `undefined`** → put `.env` next to `package.json`, no spaces around `=`, and run **from repo root**. **`dotenv` installed but env empty** → avoid quotes unless the value needs them; restart the script after editing `.env`.
+**Troubleshooting:** **`Cannot find module 'dotenv'`** → run `npm install` from the repo root (this repo already lists `dotenv`). **`PORT` is `undefined`** or server won’t listen → create `.env` from **`.env.example`** (`cp .env.example .env`), no spaces around `=`, run **`node examples/09_env.js` from repo root**. **`dotenv` installed but env empty** → restart the script after editing `.env`.
 
 ---
 
@@ -549,11 +561,12 @@ node_modules/
 # add this to package.json
 "scripts": {
   "start": "node server.js",
-  "dev": "node --watch --env-file=.env server.js"
+  "dev": "node --watch server.js"
 }
 ```
+*(This repo loads env vars via `import 'dotenv/config'` in `server.js`, so `npm run dev` works right after clone even before you create `.env`. Using `cp .env.example .env` is still recommended for lessons.)*
 
-**Troubleshooting:** **`Cannot find module 'express'`** → run `npm install` in the repo root. **`--env-file` not recognized** → upgrade Node to **20+** or load dotenv in code (this repo already uses `import 'dotenv/config'`). Typos in `package.json` → validate JSON (commas, double quotes).
+**Troubleshooting:** **`Cannot find module 'express'`** → run `npm install` in the repo root. **`node: .env: not found`** → you are on an **old** `dev` script; run `git pull` or set `"dev": "node --watch server.js"` (no `--env-file`). Typos in `package.json` → validate JSON (commas, double quotes).
 
 ---
 
@@ -877,7 +890,7 @@ Install Mongoose:
 npm install mongoose
 ```
 
-Add this to your `.env` file:
+Add **`MONGO_URI`** to your `.env` file (copy **`.env.example`** to **`.env`** first if you have not already—this repo’s template already includes a placeholder line you can edit).
 
 ```
 MONGO_URI=your_mongodb_connection_string

@@ -10,8 +10,8 @@
 //   Easy to change config without editing code
 //   Different settings for dev / production
 //
-// Run this file with:
-//   node --env-file=.env examples/09_env.js
+// Run from repo root (needs a `.env` file — copy `.env.example` to `.env` first):
+//   node examples/09_env.js
 //
 // Expected output:
 //   Connecting to DB: mongodb://localhost:27017/notes-app
