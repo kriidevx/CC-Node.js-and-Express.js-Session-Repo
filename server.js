@@ -287,6 +287,19 @@ app.delete('/api/posts/:id', (req, res) => {
 
 
 // 🔵 Start server
-app.listen(PORT, () => {
+const server = app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
+});
+
+server.on('error', (err) => {
+  if (err.code === 'EADDRINUSE') {
+    console.error(
+      `\nPort ${PORT} is already in use (another app is listening there).\n\n` +
+        `  • Stop the other server: find the terminal running it and press Ctrl+C\n` +
+        `  • Or use a different port: set PORT=3001 in your .env file, then run npm run dev again\n` +
+        `  • macOS — see what is using the port:  lsof -i :${PORT}\n`
+    );
+    process.exit(1);
+  }
+  throw err;
 });

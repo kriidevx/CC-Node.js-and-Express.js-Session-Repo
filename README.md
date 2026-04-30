@@ -22,7 +22,9 @@ You should see `Hello World 🚀`
 
 **That's it. Don't touch anything else yet. We explain everything live.**
 
-**Troubleshooting:** `git clone` fails → check the repo URL and your internet login (GitHub SSH keys or HTTPS access). `npm install` errors → use Node **20 LTS** or newer (`node -v`). **Port 8080 already in use** → stop other servers using that port or set `PORT=3001` in `.env` and open `http://localhost:3001`.
+**Troubleshooting:** `git clone` fails → check the repo URL and your internet login (GitHub SSH keys or HTTPS access). `npm install` errors → use Node **20 LTS** or newer (`node -v`).
+
+**`Error: listen EADDRINUSE` / port 8080 in use** — something else is already bound to **8080** (very common: another terminal still running `npm run dev`, or you ran `node examples/09_env.js` which also uses `PORT` from `.env`). **Fix:** go to the other terminal and **Ctrl+C** to stop it, *or* change the first line of `.env` to `PORT=3001` and open **http://localhost:3001** instead. On Mac, you can see the process: `lsof -i :8080`.
 
 ---
 
@@ -606,7 +608,7 @@ git add .
 git commit -m "feat: first server + routes"
 ```
 
-**Troubleshooting:** Blank page or **Cannot GET** → confirm `npm run dev` is running and you are using **`http://localhost:8080`** (check `PORT` in `.env`). **`ERR_EMPTY_RESPONSE`** → server crashed; read the terminal stack trace. Wrong JSON on `/api` → hard-refresh the browser or try an incognito window (cached extensions rare but possible).
+**Troubleshooting:** **`EADDRINUSE` / address already in use** → see the **Troubleshooting** note at the **top of this README** (port 8080 is taken—usually another terminal or `09_env.js`). Blank page or **Cannot GET** → confirm `npm run dev` is running and the URL matches **`PORT`** in `.env` (default **8080**). **`ERR_EMPTY_RESPONSE`** → server crashed; read the terminal. Wrong JSON on `/api` → hard-refresh or incognito.
 
 ---
 
