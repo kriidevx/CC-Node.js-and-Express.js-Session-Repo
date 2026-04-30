@@ -16,6 +16,8 @@ npm run dev
 
 Use the folder **git creates for you** when you clone (on GitHub it usually matches the repository name). All lesson files are at the **root** of that folder—no extra `cd` into another subfolder.
 
+**Important — if you cloned this repo:** run **`npm install`** then **`npm run dev`** only. **Do not run `npm init` or `npm init -y` here.** The project already has a root `package.json`; running `npm init` **overwrites** that file and can break scripts or confuse the next `npm install`. Slides still teach `npm init -y` for when you create a **new empty folder** from scratch—the clone workflow is different.
+
 Open browser → `http://localhost:8080`
 
 You should see `Hello World 🚀`
@@ -26,6 +28,8 @@ You should see `Hello World 🚀`
 
 **`Error: listen EADDRINUSE` / port 8080 in use** — something else is already bound to **8080** (very common: another terminal still running `npm run dev`, or you ran `node examples/09_env.js` which also uses `PORT` from `.env`). **Fix:** go to the other terminal and **Ctrl+C** to stop it, *or* change the first line of `.env` to `PORT=3001` and open **http://localhost:3001** instead. On Mac, you can see the process: `lsof -i :8080`.
 
+**Accidentally ran `npm init -y`?** Put `package.json` back from git: `git checkout package.json` (and `git checkout package-lock.json` if you changed it), then run `npm install` again.
+
 ---
 
 ## 📁 What's In This Repo
@@ -33,6 +37,7 @@ You should see `Hello World 🚀`
 ```
 .
 ├── examples/
+│   ├── package.json          ← CommonJS for slide `require()` scripts only (do not delete; do not `npm init` here)
 │   ├── 01_hello.js           ← SLIDE 07 — First Node program
 │   ├── 02_math.js            ← SLIDE 09 — Exporting a module
 │   ├── 03_import.js          ← SLIDE 09 — Importing a module
@@ -94,6 +99,8 @@ No code yet. Just concepts.
 
 ### 📍 SLIDES 05-06 — Setup & First Program
 
+**If you cloned this bootcamp repo:** you already have `package.json` — skip **`npm init -y`** and use **`npm install`** at the repo root instead. The commands below are what you run when **creating a new project in an empty folder** (live demo).
+
 Verify your installation in terminal:
 
 ```bash
@@ -101,7 +108,7 @@ node -v
 npm -v
 ```
 
-Initialize a project:
+Initialize a **new** project (empty folder only — not after `git clone`):
 
 ```bash
 npm init -y
