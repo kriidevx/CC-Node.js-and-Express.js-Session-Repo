@@ -22,6 +22,8 @@ You should see `Hello World 🚀`
 
 **That's it. Don't touch anything else yet. We explain everything live.**
 
+**Troubleshooting:** `git clone` fails → check the repo URL and your internet login (GitHub SSH keys or HTTPS access). `npm install` errors → use Node **20 LTS** or newer (`node -v`). **Port 8080 already in use** → stop other servers using that port or set `PORT=3001` in `.env` and open `http://localhost:3001`.
+
 ---
 
 ## 📁 What's In This Repo
@@ -84,6 +86,8 @@ No code yet. Just concepts.
 - ❌ Not suitable for CPU-heavy tasks
 - ✅ Best for I/O-heavy applications
 
+**Troubleshooting:** If concepts feel abstract, that is normal—live demos tie it together. No terminal commands yet in this block.
+
 ---
 
 ### 📍 SLIDES 05-06 — Setup & First Program
@@ -119,6 +123,8 @@ This creates `package.json` — the blueprint of your project.
 }
 ```
 
+**Troubleshooting:** `node` or `npm` **command not found** → install Node.js from [nodejs.org](https://nodejs.org) and reopen the terminal. Wrong folder → run `pwd` and `ls`; you should see `package.json` when working on this cloned repo.
+
 ---
 
 ### 📍 SLIDE 07 — Create and Run app.js
@@ -137,6 +143,8 @@ Expected output:
 ```
 Hello Node.js
 ```
+
+**Troubleshooting:** **`Cannot find module`** → run the command from the **repository root** (same folder as `package.json`). **`ENOENT`** or wrong output → check spelling: `examples/01_hello.js` uses an underscore, not a space.
 
 ---
 
@@ -183,6 +191,8 @@ Expected output:
 5
 ```
 
+**Troubleshooting:** **`require is not defined`** → run `node examples/03_import.js` from the repo root so Node picks up `examples/package.json` (CommonJS). **`Cannot find module './02_math'`** → stay in the repo root; paths are relative to the `examples/` folder.
+
 ---
 
 ### 📍 SLIDE 10 — Built-in Modules
@@ -213,6 +223,8 @@ File created
 
 Check your folder — `test.txt` appeared!
 
+**Troubleshooting:** **`EACCES` / permission denied** → run the terminal from a folder you own (e.g. Desktop or your project), not a protected system directory. **`test.txt` missing** → confirm you ran `node examples/04_fs.js` and look in the **current working directory** (`pwd`).
+
 ---
 
 ### 📍 SLIDE 11 — Raw HTTP Server
@@ -236,6 +248,8 @@ node examples/05_http.js
 Open browser → `http://localhost:3000`
 
 You built a server with 7 lines. No frameworks. No install.
+
+**Troubleshooting:** **`EADDRINUSE`** → another app is using port **3000**; quit the other server or change `3000` to `3001` in `examples/05_http.js` and open `http://localhost:3001`. Browser shows **Cannot connect** → ensure the terminal shows the script running (no crash) and the URL is **http** not https.
 
 ---
 
@@ -275,6 +289,8 @@ http://localhost:3000/xyz    → Not Found
 ```
 
 **See how messy this gets? This is exactly why Express exists.**
+
+**Troubleshooting:** Same as the raw HTTP server: only **one** process can listen on port **3000**—stop `05_http.js` before starting `06_manual_routes.js`. Trailing slashes (`/about/` vs `/about`) can change matching—use the exact URLs from the slide table.
 
 ---
 
@@ -337,6 +353,8 @@ http://localhost:3000/add?note=LearnNode   → Note added
 http://localhost:3000/notes                → ["LearnNode"]
 ```
 
+**Troubleshooting:** **`Cannot find module './07_notes'`** → run `node examples/08_notes_server.js` from the **repo root** (not from inside `examples/`). Empty or odd query results → use exactly `/add?note=LearnNode` (note the `?` and `=`).
+
 ---
 
 ### 📍 SLIDES 16-17 — Request Structure & JSON
@@ -363,6 +381,8 @@ const data = {
 JSON.stringify(data);
 // → {"note":"Learn Node","completed":false}
 ```
+
+**Troubleshooting:** JSON errors usually mean a missing comma, trailing comma, or smart quotes—use plain ASCII `"` and validate at [jsonlint.com](https://jsonlint.com) if unsure.
 
 ---
 
@@ -412,6 +432,8 @@ server.listen(PORT, () => {
 
 **Always add `.env` to `.gitignore` — never push secrets to GitHub.**
 
+**Troubleshooting:** **`Cannot find module 'dotenv'`** → run `npm install` from the repo root (this repo already lists `dotenv`). **`PORT` is `undefined`** → put `.env` next to `package.json`, no spaces around `=`, and run **from repo root**. **`dotenv` installed but env empty** → avoid quotes unless the value needs them; restart the script after editing `.env`.
+
 ---
 
 ### 📍 SLIDES 20-21 — Problems We Face & What is Express.js?
@@ -434,6 +456,8 @@ Express is a minimal and flexible Node.js web framework that provides a robust s
 React.js  ←→  Node.js + Express.js  ←→  MongoDB
   WEB              SERVER               DATABASE
 ```
+
+**Troubleshooting:** If Express feels overwhelming, focus on one idea: **routes answer URLs**. You will wire the same mental model in `server.js` next—slides stay conceptual here.
 
 ---
 
@@ -480,6 +504,8 @@ app.get('/api', (req, res) => { res.json({ message: "alive" }) })
 | 502 | Bad Gateway |
 | 503 | Service Unavailable |
 
+**Troubleshooting:** Mixed up **4xx vs 5xx**? Client mistakes (bad input, auth) → **4xx**; server bugs or downstream failures → **5xx**. Memorize **200 / 201 / 400 / 404 / 500** first.
+
 ---
 
 ### 📍 LIVE CODE #1 — Setting Up Your Express Project (SLIDE 24)
@@ -517,6 +543,8 @@ node_modules/
   "dev": "node --watch --env-file=.env server.js"
 }
 ```
+
+**Troubleshooting:** **`Cannot find module 'express'`** → run `npm install` in the repo root. **`--env-file` not recognized** → upgrade Node to **20+** or load dotenv in code (this repo already uses `import 'dotenv/config'`). Typos in `package.json` → validate JSON (commas, double quotes).
 
 ---
 
@@ -577,6 +605,8 @@ Notice the difference?
 git add .
 git commit -m "feat: first server + routes"
 ```
+
+**Troubleshooting:** Blank page or **Cannot GET** → confirm `npm run dev` is running and you are using **`http://localhost:8080`** (check `PORT` in `.env`). **`ERR_EMPTY_RESPONSE`** → server crashed; read the terminal stack trace. Wrong JSON on `/api` → hard-refresh the browser or try an incognito window (cached extensions rare but possible).
 
 ---
 
@@ -649,6 +679,8 @@ http://localhost:8080/api/posts/99   → 404 not found
 | Error handling | none needed | 404 if post not found |
 | Used for | fetch multiple records | fetch one specific record |
 
+**Troubleshooting:** **`NaN` or wrong post** → `req.params.id` is a **string**; this repo uses `parseInt`—IDs must be numeric (`/api/posts/1`, not `/api/posts/abc`). Query `limit` ignored → use **`?limit=2`** (question mark) with no spaces. Still seeing old data → restart `npm run dev` after editing `server.js`.
+
 ---
 
 ### 📍 LIVE CODE #4 — Middleware (SLIDE 29)
@@ -700,6 +732,8 @@ git commit -m "feat: logger middleware"
 ```
 
 Hit any route — watch your terminal. Every request prints automatically.
+
+**Troubleshooting:** Requests **hang forever** → middleware called **`next()`** missing or not reached—every path must call `next()` or send a response. No logs → ensure `app.use(logger)` runs **before** routes you are testing (order matters). **`Failed to load module`** for logger → path must be `./middleware/logger.js` from `server.js` at repo root.
 
 ---
 
@@ -768,6 +802,8 @@ git add .
 git commit -m "feat: full CRUD API"
 ```
 
+**Troubleshooting:** **POST/PUT return 400** → body must be **JSON** with `Content-Type: application/json` (Postman: Body → raw → JSON). **404 on PUT/DELETE** → ID must exist; order of requests matters if you already deleted that ID. **Still GET-only in browser** → browsers do not send POST bodies like Postman—use Postman or fetch/curl for writes.
+
 ---
 
 ## 🧪 FINAL EXERCISE
@@ -781,6 +817,11 @@ Open Postman. We're going to test all 5 routes.
 4. PUT    /api/posts/1  body: { "title": "Updated Title" }     → 200
 5. DELETE /api/posts/1                                         → 200, array without post 1
 ```
+
+**Troubleshooting:** Postman shows **Could not get response** → server not running or wrong host/port. **415 / parse errors** → select **JSON** body, not form-data. Results differ from neighbor → in-memory `posts` reset when the server restarts.
+
+---
+
 ## 📍 SLIDES 32–35 — MongoDB Integration (Real Database)
 
 Until now, we’ve been using an in-memory array as our database:
@@ -845,6 +886,8 @@ Mongoose is a library that helps us:
 * Define data structure
 * Perform database operations easily
 
+**Troubleshooting:** **`mongosh` / connection refused** → start MongoDB locally or use Atlas and paste the full **`MONGO_URI`** (including password). **`Authentication failed`** → check username/password and IP **allow list** (Atlas: Network Access). Wrong Node version for Mongoose → use **Node 18+**.
+
 ---
 
 ## 🧠 Step 2 — Connect & Create Model
@@ -879,6 +922,8 @@ Notice:
 * No need to manually manage IDs
 
 👉 This model now replaces our `posts` array.
+
+**Troubleshooting:** **`Cast to ObjectId failed`** → route `:id` must be a valid Mongo **`ObjectId`** string, not the old numeric `1`. **`ValidationError`** → body fields must match the schema (e.g. required `title`).
 
 ---
 
@@ -1044,6 +1089,8 @@ Array → MongoDB
 ```
 
 **Same API. Same logic. Now persistent and production-ready.**
+
+**Troubleshooting (MongoDB overall):** Data **disappears after deploy** → you wired Atlas but `.env` missing on the host; set **`MONGO_URI`** in production secrets. **Works locally, fails in cloud** → Atlas firewall must allow **0.0.0.0/0** (temp dev) or your host’s outbound IP.
 
 ---
 
