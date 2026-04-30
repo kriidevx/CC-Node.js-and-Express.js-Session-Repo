@@ -1,52 +1,159 @@
 # 🟢 Node.js & Express.js — Session Starter
 
-**CC Web Dev Bootcamp**
+**CC Web Dev Bootcamp**  
 **Instructors:** Kruthi Krishna & Bhavya Chawat
+
+**How to use this file:** (1) Do **After you clone** in order. (2) In class, read **Session flow** from top to bottom — it matches the slide deck. (3) Use the **Quick fixes** table any time something breaks.
 
 ---
 
-## ⚡ Do This RIGHT NOW Before We Start
+## What you will learn
+
+- **Node.js** — run JavaScript on your computer, `console.log`, **modules** (`require` / `import`), built-ins like **`fs`** and **`http`**
+- **HTTP** — what a request is, simple servers, why hand-written routes get messy
+- **Express** — a small framework: **routes**, **middleware**, JSON APIs
+- **REST** — **GET / POST / PUT / DELETE** on a sample **posts** API in `server.js`
+- **Later: MongoDB** — same API idea, but data lives in a database (optional extension)
+
+---
+
+## Before you start
+
+| Check | What to do |
+|-------|------------|
+| **Node.js** | Run `node -v` in terminal. You want **v20+** (install from [nodejs.org](https://nodejs.org) if needed). |
+| **This folder** | You know how to `cd` into a folder and open a terminal there. |
+| **Git** | You can `git clone` using the link your instructor gives you. |
+
+---
+
+<a id="after-clone"></a>
+## After you clone — follow these steps in order
+
+Do everything from the **repository root** — the folder that contains **`package.json`** and **`server.js`**. (On GitHub, the folder name is usually the same as the repository name.)
+
+### Step 1 — Open the project folder in your terminal
 
 ```bash
-git clone <repo-link>
-cd <repository-folder>
+cd path/to/your-cloned-folder
+```
+
+Use the real path on your machine (e.g. `cd ~/Projects/CC-Node.js-and-Express.js-Session-Repo-1`).
+
+### Step 2 — Make sure you are in the right place
+
+```bash
+ls
+```
+
+You should see **`package.json`**, **`server.js`**, **`examples`**, and **`README.md`**. If not, you are in the wrong directory — `cd` until you see them.
+
+### Step 3 — Install dependencies (do this once per clone)
+
+```bash
 npm install
+```
+
+Wait until it finishes without errors.
+
+### Step 4 — Create your local `.env` file (strongly recommended)
+
+Git does **not** store `.env` (so secrets are never public). This repo includes **`.env.example`** with safe placeholder values.
+
+**macOS / Linux:**
+
+```bash
+cp .env.example .env
+```
+
+**Windows (Command Prompt):**
+
+```cmd
+copy .env.example .env
+```
+
+**Windows (PowerShell):**
+
+```powershell
+Copy-Item .env.example .env
+```
+
+> **Note:** You *can* run the next step even if you skip Step 4 — the app falls back to port **8080**. Step 4 avoids `undefined` when you run **`examples/09_env.js`** and matches the env lessons.
+
+### Step 5 — Start the dev server
+
+```bash
 npm run dev
 ```
 
-Use the folder **git creates for you** when you clone (on GitHub it usually matches the repository name). All lesson files are at the **root** of that folder—no extra `cd` into another subfolder.
+Keep this terminal **open**. Stop the server any time with **Ctrl+C** (Mac / Windows) or **Ctrl+Break** in some Windows terminals.
 
-### After `git clone` — read this once (prevents most “my repo is broken” issues)
+### Step 6 — Test in the browser
 
-| Question | Answer |
-|----------|--------|
-| **Why two `package.json` files?** | **Root** `package.json` = the real Express app (`npm install` / `npm run dev`). **`examples/package.json`** is tiny on purpose: it only sets `"type": "commonjs"` so the slide files under `examples/` can use `require()`. It is **not** a second project—do **not** run `npm init` inside `examples/`, and do **not** delete it. |
-| **Where is `.env`?** | It is **not** on GitHub (secrets stay off the remote). This repo includes **`.env.example`**. For slides that read env vars (e.g. `examples/09_env.js`), copy it once: **macOS/Linux:** `cp .env.example .env` · **Windows (cmd):** `copy .env.example .env` · **Windows (PowerShell):** `Copy-Item .env.example .env`. Express will still start without `.env` (default port **8080** in code); copying is mainly for matching the lesson and avoiding `undefined` in env demos. |
-| **What should I never do at the root after cloning?** | **`npm init` / `npm init -y`** — it **overwrites** the root `package.json`. Use **`npm install`** only. |
+Open: **http://localhost:8080**  
+You should see: **Hello World 🚀**
 
-**Important — if you cloned this repo:** run **`npm install`** then **`npm run dev`** only. **Do not run `npm init` or `npm init -y` here.** The project already has a root `package.json`; running `npm init` **overwrites** that file and can break scripts or confuse the next `npm install`. Slides still teach `npm init -y` for when you create a **new empty folder** from scratch—the clone workflow is different.
+If that works, you are ready for class. **You do not need to edit any code before the instructor says so.**
 
-Open browser → `http://localhost:8080`
+### All-in-one (after you are in the right folder)
 
-You should see `Hello World 🚀`
+```bash
+npm install
+cp .env.example .env
+npm run dev
+```
 
-**That's it. Don't touch anything else yet. We explain everything live.**
-
-**Troubleshooting:** `git clone` fails → check the repo URL and your internet login (GitHub SSH keys or HTTPS access). `npm install` errors → use Node **20 LTS** or newer (`node -v`).
-
-**`Error: listen EADDRINUSE` / port 8080 in use** — something else is already bound to **8080** (very common: another terminal still running `npm run dev`, or you ran `node examples/09_env.js` which also uses `PORT` from `.env`). **Fix:** go to the other terminal and **Ctrl+C** to stop it, *or* change the first line of `.env` to `PORT=3001` and open **http://localhost:3001** instead. On Mac, you can see the process: `lsof -i :8080`.
-
-**Accidentally ran `npm init -y`?** Put `package.json` back from git: `git checkout package.json` (and `git checkout package-lock.json` if you changed it), then run `npm install` again.
+*(On Windows, use `copy` or `Copy-Item` instead of `cp` for the second line.)*
 
 ---
 
-## 📁 What's In This Repo
+## Cloned students vs. “start from empty folder” (don’t mix these up)
+
+| Situation | What you do |
+|-----------|-------------|
+| **You cloned this repo** (most people) | Follow the steps above. Use **`npm install` only** at the root. **Do not** run **`npm init`** or **`npm init -y`** here. |
+| **Slides show `npm init -y`** | That is for building a project in a **completely empty folder** during a live demo. **Skip** that if you already have this repo. |
+
+---
+
+## FAQ (beginner confusion, cleared up)
+
+**Why are there two `package.json` files?**
+
+- **Root** `package.json` = the real app (`npm install`, `npm run dev`, Express).
+- **`examples/package.json`** = a **small helper** so files under `examples/` can use old-style **`require()`** like the slides. It is **not** a second app. **Do not** `npm init` inside `examples/`. **Do not** delete that file.
+
+**Why isn’t `.env` in the download?**
+
+- Secrets must not be on GitHub. Copy **`.env.example` → `.env`** (Step 4).
+
+**What must I never run at the project root after cloning?**
+
+- **`npm init`** / **`npm init -y`** — it can **overwrite** the real `package.json`. If you did it by accident: `git checkout package.json package-lock.json` then `npm install` again.
+
+---
+
+## Common problems (quick fixes)
+
+| What you see | What to do |
+|--------------|------------|
+| `git clone` failed | Check the URL, internet, and GitHub login / SSH. |
+| `npm install` errors | Run `node -v` (need v20+). Read the error text — often a typo or network issue. |
+| `EADDRINUSE` / port 8080 in use | Another program is using 8080. **Ctrl+C** the other terminal, or set `PORT=3001` in `.env` and open **http://localhost:3001** — or on Mac/Linux: `lsof -i :8080` to see the process. |
+| `Cannot find module` when running `node examples/...` | Run that command from the **repository root**, not from inside `examples/`. |
+| `require is not defined` in `examples/` | Stay at the **root** so Node finds `examples/package.json`. |
+| `node: .env: not found` in an old `dev` script | `git pull` the latest repo, or your `dev` script should be `node --watch server.js` (no required `.env` on disk). |
+| Port **3000** errors in `examples/05_*.js` | Only one program can use a port. Stop the previous `node` server before starting the next. |
+
+---
+
+## What’s in this folder
 
 ```
 .
-├── .env.example              ← safe template; copy to `.env` locally (`.env` is gitignored)
+├── .env.example              ← copy to `.env` locally (see Step 4)
 ├── examples/
-│   ├── package.json          ← CommonJS for slide `require()` scripts only (do not delete; do not `npm init` here)
+│   ├── package.json          ← allows `require()` in lesson scripts (do not delete; do not npm init here)
 │   ├── 01_hello.js           ← SLIDE 07 — First Node program
 │   ├── 02_math.js            ← SLIDE 09 — Exporting a module
 │   ├── 03_import.js          ← SLIDE 09 — Importing a module
@@ -58,16 +165,38 @@ You should see `Hello World 🚀`
 │   └── 09_env.js             ← SLIDES 18-19 — Environment variables
 ├── middleware/
 │   └── logger.js             ← LIVE CODE #4 — Custom logger
-├── .env                      ← you create (copy from `.env.example`) — not committed to Git
+├── .env                      ← you create (not on GitHub)
 ├── .gitignore
 ├── package.json
 ├── README.md
-└── server.js                 ← LIVE CODE #1–#5 — All Express coding here
+└── server.js                 ← LIVE CODE #1–#5 — Express app (main lesson file)
 ```
 
 ---
 
+## How the rest of this README is organized
+
+1. **Session flow** (below) — **same order as the slides**. Follow along during class.
+2. **`examples/*.js`** — small demos. From the repo root, run: `node examples/01_hello.js`, etc.
+3. **`server.js`** — where **Express live coding** happens when the instructor opens it.
+
+---
+
+## Table of contents
+
+Jump ahead when reviewing:
+
+- [Session flow — every slide](#session-flow)
+- [Final exercise](#final-exercise)
+- [MongoDB integration](#mongodb)
+- [What’s next](#whats-next)
+
+---
+
+<a id="session-flow"></a>
 ## 🗺️ Session Flow — Every Slide Covered
+
+**During class:** follow these sections **in order** (same order as the deck). When you see a command in a gray code block, run it from the **repository root** (the folder with `package.json`) **unless the slide says otherwise**. Slides that only explain ideas have **no commands**—just read and listen.
 
 ---
 
@@ -108,7 +237,7 @@ No code yet. Just concepts.
 
 ### 📍 SLIDES 05-06 — Setup & First Program
 
-**If you cloned this bootcamp repo:** you already have `package.json` — skip **`npm init -y`** and use **`npm install`** at the repo root instead. The commands below are what you run when **creating a new project in an empty folder** (live demo).
+**Cloned this repo?** You already have `package.json` — use **`npm install`** only; **do not** run `npm init` (see **Cloned students vs. “start from empty folder”** at the top). The commands below are for **starting a brand-new project in an empty folder** (instructor live demo).
 
 Verify your installation in terminal:
 
@@ -533,9 +662,9 @@ app.get('/api', (req, res) => { res.json({ message: "alive" }) })
 
 **Switch to `server.js` now. All Express coding happens here.**
 
-Already done for you in this repo. This is what was set up:
+Already done for you in this repo. If you followed **[After you clone](#after-clone)** at the top, you are set — open `server.js` and listen for live edits. The steps below mirror what an instructor would type **starting from zero**:
 
-**STEP 1** *(skip if you cloned this repo—you already have the project; run `npm install` from the repo root instead)*  
+**STEP 1** *(skip if you cloned — you already ran `npm install`; never run `npm init` here)*  
 ```bash
 mkdir my-express-app
 cd my-express-app
@@ -828,6 +957,7 @@ git commit -m "feat: full CRUD API"
 
 ---
 
+<a id="final-exercise"></a>
 ## 🧪 FINAL EXERCISE
 
 Open Postman. We're going to test all 5 routes.
@@ -844,6 +974,7 @@ Open Postman. We're going to test all 5 routes.
 
 ---
 
+<a id="mongodb"></a>
 ## 📍 SLIDES 32–35 — MongoDB Integration (Real Database)
 
 Until now, we’ve been using an in-memory array as our database:
@@ -1116,6 +1247,7 @@ Array → MongoDB
 
 ---
 
+<a id="whats-next"></a>
 ## 📌 What's Next
 
 The **Deadline Tracker API** assignment drops after this session.
